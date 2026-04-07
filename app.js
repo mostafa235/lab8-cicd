@@ -26,7 +26,8 @@ async function seedData() {
       { name: 'Eggs', status: 'done' },
       { name: 'Bread', status: 'pending' },
       { name: 'Butter', status: 'pending' },
-      { name: 'Orange juice', status: 'pending' }
+      { name: 'Orange juice', status: 'pending' },
+      { id: 7, name: 'Tea', status: 'pending' } 
     ]);
   }
 }
