@@ -1,0 +1,47 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # هيشتغل أوتوماتيك لما ترفع أي تعديل على فرع main
+
+jobs:
+  # المهمة الأولى: بناء الصورة ورفعها على Docker Hub
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          # تأكد إن اسم الصورة هنا مطابق للي بتستخدمه(مثلاً lab6-app)
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lab6-app:latest
+
+  # المهمة الثانية: الدخول على سيرفر EC2 وتشغيل التحديثات
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          # ده الجزء اللي عدلناه في Task 2 عشان يشتغل بـ Docker Compose
+          script: |
+            cd ~/lab8-cicd
+            git pull
+            docker compose pull
+            docker compose down
+            docker compose up -d
