@@ -6,7 +6,14 @@ const app = express();
 const PORT = 3000;
 
 // الاتصال بقاعدة البيانات
-mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/lab6');
+mongoose.connect(process.env.MONGO_URL || 'mongodb://mongo:27017/lab6', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('Connected to MongoDB');
+}).catch(err => {
+  console.error('MongoDB connection error:', err);
+});
 
 // Schema
 const taskSchema = new mongoose.Schema({
@@ -16,23 +23,28 @@ const taskSchema = new mongoose.Schema({
 
 const Task = mongoose.model('Task', taskSchema);
 
-// Seed Data
+// Seed Data: إضافة بيانات جديدة بدون تكرار
 async function seedData() {
-  const count = await Task.countDocuments();
+  const tasksToAdd = [
+    { name: 'Milk', status: 'done' },
+    { name: 'Eggs', status: 'done' },
+    { name: 'Bread', status: 'pending' },
+    { name: 'Butter', status: 'pending' },
+    { name: 'Orange juice', status: 'pending' },
+    { name: 'Tea', status: 'pending' } // المهمة الجديدة
+  ];
 
-  if (count === 0) {
-    await Task.insertMany([
-      { name: 'Milk', status: 'done' },
-      { name: 'Eggs', status: 'done' },
-      { name: 'Bread', status: 'pending' },
-      { name: 'Butter', status: 'pending' },
-      { name: 'Orange juice', status: 'pending' },
-      { id: 7, name: 'Tea', status: 'pending' }
-    ]);
+  for (const task of tasksToAdd) {
+    const exists = await Task.findOne({ name: task.name });
+    if (!exists) {
+      await Task.create(task);
+      console.log(`Added task: ${task.name}`);
+    }
   }
 }
 
-seedData();
+// نفذ الـ seed
+seedData().catch(err => console.error(err));
 
 // Route 1
 app.get('/', (req, res) => {
@@ -59,6 +71,7 @@ app.get('/tasks', async (req, res) => {
   res.json(grouped);
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log('----------------------------------');
   console.log(`App running on port ${PORT}`);
