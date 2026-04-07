@@ -27,7 +27,7 @@ async function seedData() {
       { name: 'Bread', status: 'pending' },
       { name: 'Butter', status: 'pending' },
       { name: 'Orange juice', status: 'pending' },
-      { id: 7, name: 'Tea', status: 'pending' } 
+      { id: 7, name: 'Tea', status: 'pending' }
     ]);
   }
 }
@@ -37,7 +37,7 @@ seedData();
 // Route 1
 app.get('/', (req, res) => {
   res.json({
-    app: 'CISC 886 Lab 6',
+    app: 'CISC 886 Lab 8',
     mode: process.env.MODE || 'local',
     node: process.version,
     host: os.hostname(),
