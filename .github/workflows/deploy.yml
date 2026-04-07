@@ -37,10 +37,10 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
-          key: ${{ secrets.EC2_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           # ده الجزء اللي عدلناه في Task 2 عشان يشتغل بـ Docker Compose
           script: |
-            cd ~/lab8-cicd
+            cd ~/lab8
             git pull
             docker compose pull
             docker compose down
