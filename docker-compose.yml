@@ -8,7 +8,7 @@ services:
 
     image: lab8-app:latest   # بدّل build: . و container_name: lab6-app
 
-    container_name: lab6-app
+    container_name: lab8-app
 
     ports:
 
