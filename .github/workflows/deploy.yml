@@ -25,7 +25,7 @@ jobs:
           context: .
           push: true
           # تأكد إن اسم الصورة هنا مطابق للي بتستخدمه(مثلاً lab6-app)
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lab6-app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/lab8-app:latest
 
   # المهمة الثانية: الدخول على سيرفر EC2 وتشغيل التحديثات
   deploy:
