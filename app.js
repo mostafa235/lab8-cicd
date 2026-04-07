@@ -17,25 +17,21 @@ const taskSchema = new mongoose.Schema({
 const Task = mongoose.model('Task', taskSchema);
 
 // Seed Data
-// Seed Data
 async function seedData() {
-  const tasksToAdd = [
-    { name: 'Milk', status: 'done' },
-    { name: 'Eggs', status: 'done' },
-    { name: 'Bread', status: 'pending' },
-    { name: 'Butter', status: 'pending' },
-    { name: 'Orange juice', status: 'pending' },
-    { name: 'Tea', status: 'pending' }
-  ];
+  const count = await Task.countDocuments();
 
-  for (const task of tasksToAdd) {
-    await Task.updateOne(
-      { name: task.name },        // لو فيه نفس الاسم
-      { $setOnInsert: task },     // اضيفه لو مش موجود
-      { upsert: true }            // اجعل العملية upsert
-    );
+  if (count === 0) {
+    await Task.insertMany([
+      { name: 'Milk', status: 'done' },
+      { name: 'Eggs', status: 'done' },
+      { name: 'Bread', status: 'pending' },
+      { name: 'Butter', status: 'pending' },
+      { name: 'Orange juice', status: 'pending' },
+      { id: 7, name: 'Tea', status: 'pending' }
+    ]);
   }
 }
+
 seedData();
 
 // Route 1
