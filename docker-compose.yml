@@ -1,0 +1,57 @@
+version: '3.8'
+
+
+
+services:
+
+  app:
+
+    image: lab8-app:latest   # بدّل build: . و container_name: lab6-app
+
+    container_name: lab6-app
+
+    ports:
+
+      - "3000:3000"
+
+    environment:
+
+      - MONGO_URL=mongodb://mongo:27017/lab6
+
+    depends_on:
+
+      - mongo
+
+    networks:
+
+      - lab6-net
+
+
+
+  mongo:
+
+    image: mongo:latest
+
+    container_name: mongo
+
+    restart: always
+
+    volumes:
+
+      - mongo-data:/data/db
+
+    networks:
+
+      - lab6-net
+
+
+
+networks:
+
+  lab6-net:
+
+
+
+volumes:
+
+  mongo-data:
