@@ -6,7 +6,7 @@ services:
 
   app:
 
-    image: mostafamohamedelsaht/lab8-app:latest   # بدّل build: . و container_name: lab6-app
+    image: lab8-app:latest   # بدّل build: . و container_name: lab6-app
 
     container_name: lab-app
 
@@ -16,7 +16,7 @@ services:
 
     environment:
 
-      - MONGO_URL=mongodb://mongo:27017/lab6
+      - MONGO_URL=mongodb://mongo:27017/lab8
 
     depends_on:
 
@@ -24,7 +24,7 @@ services:
 
     networks:
 
-      - lab6-net
+      - lab8-net
 
 
 
@@ -42,13 +42,13 @@ services:
 
     networks:
 
-      - lab6-net
+      - lab8-net
 
 
 
 networks:
 
-  lab6-net:
+  lab8-net:
 
 
 
